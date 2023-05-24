@@ -19,6 +19,7 @@
     <module>creditFacade</module>
     <module>msgFacade</module>
     <module>dataModel</module>
+    <module>bankUserService</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>

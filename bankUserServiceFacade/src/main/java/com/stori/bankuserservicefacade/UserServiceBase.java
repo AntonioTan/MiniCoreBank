@@ -2,6 +2,14 @@ package com.stori.bankuserservicefacade;
 
 public interface UserServiceBase {
 
+
+    /**
+     * open a new user account
+     * @param name the user name
+     * @return whether the set operation is successful or not
+     */
+    public abstract boolean addUser(String name);
+
     /**
      * send request to credit module to set the credit limit
      *
@@ -30,8 +38,8 @@ public interface UserServiceBase {
     public abstract int getAccountBalance(long userId);
 
     /**
-     * @param creditCardId the credit card id
+     * @param userId the user id
      * @return whether the operation is successful or not
      */
-    public abstract boolean addCreditCard(long creditCardId);
+    public abstract boolean addCreditCard(long userId);
 }
