@@ -18,12 +18,10 @@ public class Transaction {
 
     @OneToOne
     @JoinColumn(name="credit_card_id", referencedColumnName = "id")
-    @Column(updatable = false, nullable = false)
     private CreditCard creditCard;
 
     @OneToOne
     @JoinColumn(name="merchant_id", referencedColumnName = "id")
-    @Column(updatable = false, nullable = false)
     private Merchant merchant;
 
     @Column(updatable = false, nullable = false)

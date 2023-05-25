@@ -1,5 +1,7 @@
 package com.stori.bankuserservice;
 
+import com.alipay.sofa.runtime.api.annotation.SofaReference;
+import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservice.util.BankUserServiceUtil;
 import com.stori.bankuserservicefacade.CreditCardStatus;
 import com.stori.bankuserservicefacade.UserServiceBase;
@@ -14,54 +16,31 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Component
+@SofaService(uniqueId = "userService")
+@Service
 public class UserService implements UserServiceBase {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(UserService.class);
     private static final BankUserServiceUtil bankUserServiceUtil = new BankUserServiceUtil();
+
+    @SofaReference(uniqueId = "creditCardService")
+    private CreditCardService creditCardService;
+
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CreditCardRepository creditCardRepository;
 
 
     @Override
-    public boolean addUser(String name) {
-        // TODO
-        return false;
+    public Long addUser(String name) {
+        User user = new User(name);
+        userRepository.save(user);
+        return user.getId();
     }
 
-    @Transactional(timeout = 30)
-    @Override
-    public boolean setCreditLimit(long creditCardId, int creditLimit) {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(creditCardId);
-        if (!optionalCreditCard.isPresent()) {
-            logger.error("Failed to get credit card by id: " + creditCardId);
-           return false;
-        } else {
-            CreditCard creditCard = optionalCreditCard.get();
-            creditCard.setCreditLimit(creditLimit);
-            creditCardRepository.save(creditCard);
-            logger.info("Successfully set credit limit for card with id: " + creditCardId);
-            return true;
-        }
-    }
-
-    @Override
-    @Transactional(readOnly = true, timeout = 30)
-    public int getAvailableCredit(long creditCardId) {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(creditCardId);
-        if(!optionalCreditCard.isPresent()) {
-            logger.error("Failed to get credit card by id: " + creditCardId);
-            return -1;
-        } else {
-            CreditCard creditCard = optionalCreditCard.get();
-            return creditCard.getCreditLimit();
-        }
-    }
 
     @Override
     @Transactional(readOnly = true, timeout = 30)
