@@ -20,6 +20,7 @@
     <module>msgFacade</module>
     <module>dataModel</module>
     <module>bankUserService</module>
+    <module>run</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>

@@ -4,17 +4,17 @@ import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.repository.CreditCardRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @Component
 public class BankUserServiceUtil {
     private static final Logger logger = LogManager.getLogger();
 
-    @Autowired
+    @Resource
     private CreditCardRepository creditCardRepository;
 
     @Transactional(timeout = 30)
