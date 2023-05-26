@@ -2,11 +2,16 @@ package com.stori.bankuserservice;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
 @SpringBootTest
+@ContextConfiguration(classes = { TestConfiguration.class }, loader = AnnotationConfigContextLoader.class)
 public class UserServiceTests {
-    private UserService userService = new UserService();
+    @Autowired
+    private UserService userService;
 
     @Test
     public void addUser() {

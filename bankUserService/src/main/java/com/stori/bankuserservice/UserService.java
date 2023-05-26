@@ -21,11 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @SofaService(uniqueId = "userService")
-@Service
+@Service("userService")
 public class UserService implements UserServiceBase {
 
     private static final Logger logger = LogManager.getLogger(UserService.class);
-    private static final BankUserServiceUtil bankUserServiceUtil = new BankUserServiceUtil();
 
     @SofaReference(uniqueId = "creditCardService")
     private CreditCardService creditCardService;

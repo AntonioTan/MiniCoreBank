@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@Service
+@Service("creditCardService")
 @SofaService(uniqueId = "creditCardService")
 public class CreditCardService implements CreditCardBase {
     @Autowired
