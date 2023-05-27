@@ -1,5 +1,6 @@
 package com.stori.bankuserservice;
 
+import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservicefacade.CreditCardBase;
 import com.stori.bankuserservicefacade.CreditCardStatus;
@@ -11,12 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 @Service
 @SofaService(uniqueId = "creditCardService")
 public class CreditCardService implements CreditCardBase {
-    @Autowired
+    @Resource
     private CreditCardRepository creditCardRepository;
 
     private final static Logger logger = LogManager.getLogger(CreditCard.class);
