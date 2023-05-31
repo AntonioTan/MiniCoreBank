@@ -3,6 +3,7 @@ package com.stori.bankuserservice;
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservice.util.BankUserServiceUtil;
+import com.stori.bankuserservicefacade.CreditCardBase;
 import com.stori.bankuserservicefacade.CreditCardStatus;
 import com.stori.bankuserservicefacade.UserServiceBase;
 import com.stori.datamodel.model.CreditCard;
@@ -19,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 
 @SofaService(uniqueId = "userService")
 @Service("userService")
@@ -27,11 +30,10 @@ public class UserService implements UserServiceBase {
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
     @SofaReference(uniqueId = "creditCardService")
-    private CreditCardService creditCardService;
+    private CreditCardBase creditCardService;
 
-    @Autowired
+    @Resource
     private UserRepository userRepository;
-
 
     @Override
     public Long addUser(String name) {
