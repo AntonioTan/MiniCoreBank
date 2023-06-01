@@ -22,7 +22,7 @@ public interface UserServiceBase {
 
     /**
      * @param userId the user id
-     * @return whether the operation is successful or not
+     * @return credit card id if operation is successful otherwise return -1
      */
-    public abstract boolean addCreditCard(long userId);
+    public abstract Long addCreditCard(long userId);
 }

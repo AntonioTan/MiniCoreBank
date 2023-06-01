@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Table(name="USER")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GenericGenerator(name = "native", strategy = "native")
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
@@ -27,7 +27,7 @@ public class User {
     }
 
     @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "credit_card_id", referencedColumnName = "id", nullable = false, updatable = false)
+    @JoinColumn(name = "credit_card_id", referencedColumnName = "id", updatable = false)
     private CreditCard creditCard;
 
 
@@ -45,6 +45,10 @@ public class User {
 
     public void setCreditCard(CreditCard creditCard) {
         this.creditCard = creditCard;
+    }
+
+    public CreditCard getCreditCard() {
+        return this.creditCard;
     }
 
 

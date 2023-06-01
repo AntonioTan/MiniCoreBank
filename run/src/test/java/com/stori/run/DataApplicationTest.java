@@ -38,4 +38,12 @@ public class DataApplicationTest {
         userRepository.findById(1L);
 
     }
+
+    @Test
+    public void shouldAddUser() {
+        Long userId = userService.addUser("Tianyi Tan");
+        Assert.assertTrue(userId >= 0);
+        int userBalance = userService.getAccountBalance(userId);
+        Assert.assertEquals(userBalance, 0);
+    }
 }

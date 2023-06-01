@@ -2,25 +2,18 @@ package com.stori.bankuserservice;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
-import com.stori.bankuserservice.util.BankUserServiceUtil;
 import com.stori.bankuserservicefacade.CreditCardBase;
-import com.stori.bankuserservicefacade.CreditCardStatus;
 import com.stori.bankuserservicefacade.UserServiceBase;
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.model.User;
-import com.stori.datamodel.repository.CreditCardRepository;
 import com.stori.datamodel.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-
-import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Optional;
 
 
 @SofaService(uniqueId = "userService")
@@ -58,18 +51,18 @@ public class UserService implements UserServiceBase {
 
     @Override
     @Transactional(timeout = 30)
-    public boolean addCreditCard(long userId) {
+    public Long addCreditCard(long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(!optionalUser.isPresent()) {
             logger.error("Failed to find user by id: " + userId);
-            return false;
+            return (long) -1;
         } else {
             CreditCard creditCard = new CreditCard();
             User user = optionalUser.get();
             user.setCreditCard(creditCard);
             creditCard.setUser(user);
             userRepository.save(user);
-            return false;
+            return user.getCreditCard().getId();
         }
     }
 }

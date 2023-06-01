@@ -13,8 +13,7 @@ public class CreditCard {
     private final static Calendar cal = Calendar.getInstance();
     private final static int CREDIT_CARD_VALID_PERIOD = 10;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
@@ -63,8 +62,16 @@ public class CreditCard {
         return this.creditLimit;
     }
 
+    public long getId() {
+        return this.id;
+    }
+
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public CreditCardStatus getCreditCardStatus() {
+        return this.creditCardStatus;
     }
 
 

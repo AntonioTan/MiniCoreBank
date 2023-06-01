@@ -1,6 +1,5 @@
 package com.stori.bankuserservice;
 
-import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservicefacade.CreditCardBase;
 import com.stori.bankuserservicefacade.CreditCardStatus;
@@ -8,7 +7,6 @@ import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.repository.CreditCardRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +28,14 @@ public class CreditCardService implements CreditCardBase {
 
     @Override
     public CreditCardStatus getStatus(long creditCardId) {
-        return null;
+        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(creditCardId);
+        if(!optionalCreditCard.isPresent()) {
+            logger.error("Failed to get credit card by id: " + creditCardId);
+            return null;
+        } else {
+            CreditCard creditCard = optionalCreditCard.get();
+            return creditCard.getCreditCardStatus();
+        }
     }
 
     @Transactional(timeout = 30)
