@@ -1,10 +1,11 @@
-package com.stori.msgfacade;
+package com.stori.recordfacade;
 
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MsgFacadeApplicationTests {
+class RecordFacadeApplicationTests {
 
     @Test
     void contextLoads() {

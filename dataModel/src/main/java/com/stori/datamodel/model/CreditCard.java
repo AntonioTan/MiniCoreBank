@@ -31,6 +31,8 @@ public class CreditCard {
 
     private int creditLimit;
 
+    private int creditUsed;
+
     @Column(name="credit_card_status", nullable = false)
     private CreditCardStatus creditCardStatus;
 

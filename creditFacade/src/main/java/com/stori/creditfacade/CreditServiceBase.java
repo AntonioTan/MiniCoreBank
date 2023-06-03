@@ -1,20 +1,6 @@
 package com.stori.creditfacade;
 
-public interface CreditBase {
-
-    /**
-     * @return the id of the credit card
-     */
-    public abstract long getCreditCardId();
-
-    /**
-     * set the credit limit for the credit card
-     *
-     * @param creditLimit the init credit set for the credit card
-     * @return whether the operation is successful or not
-     */
-    public abstract boolean setCreditLimit(int creditLimit);
-
+public interface CreditServiceBase {
     /**
      * add new credit utilization record for the credit card
      *

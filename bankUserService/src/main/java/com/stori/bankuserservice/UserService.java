@@ -2,7 +2,7 @@ package com.stori.bankuserservice;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
-import com.stori.bankuserservicefacade.CreditCardBase;
+import com.stori.bankuserservicefacade.CreditCardServiceBase;
 import com.stori.bankuserservicefacade.UserServiceBase;
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.model.User;
@@ -23,7 +23,7 @@ public class UserService implements UserServiceBase {
     private static final Logger logger = LogManager.getLogger(UserService.class);
 
     @SofaReference(uniqueId = "creditCardService")
-    private CreditCardBase creditCardService;
+    private CreditCardServiceBase creditCardService;
 
     @Resource
     private UserRepository userRepository;
@@ -33,6 +33,12 @@ public class UserService implements UserServiceBase {
         User user = new User(name);
         userRepository.save(user);
         return user.getId();
+    }
+
+    @Override
+    @Transactional
+    public void removeUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 
 

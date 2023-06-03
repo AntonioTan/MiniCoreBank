@@ -1,6 +1,6 @@
 package com.stori.bankuserservicefacade;
 
-public interface CreditCardBase {
+public interface CreditCardServiceBase {
 
     /**
      * set the status for the user
@@ -28,10 +28,10 @@ public interface CreditCardBase {
     public abstract boolean setCreditLimit(long creditCardId, int creditLimit);
 
     /**
-     * send request to credit module to get the remaining credit limit
+     * send request to credit module to get the current credit limit
      *
      * @param creditCardId the id of the credit card owned by the user
-     * @return the available credit of the credit card owned by the user
+     * @return the current credit limit of the credit card owned by the user
      */
-    public abstract int getAvailableCredit(long creditCardId);
+    public abstract int getCreditLimit(long creditCardId);
 }

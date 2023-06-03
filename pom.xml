@@ -21,6 +21,8 @@
     <module>dataModel</module>
     <module>bankUserService</module>
     <module>run</module>
+    <module>creditService</module>
+    <module>recordFacade</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>
