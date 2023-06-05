@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service("creditCardService")
 @SofaService(uniqueId = "creditCardService")
-public class CreditCardServiceService implements CreditCardServiceBase {
+public class CreditCardService implements CreditCardServiceBase {
     @Resource
     private CreditCardRepository creditCardRepository;
 

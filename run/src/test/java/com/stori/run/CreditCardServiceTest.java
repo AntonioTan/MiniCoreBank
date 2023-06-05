@@ -21,11 +21,11 @@ public class CreditCardServiceTest {
     @SofaReference(uniqueId = "creditCardService")
     private CreditCardServiceBase creditCardService;
 
-    private boolean initialized = true;
+    private static boolean initialized = true;
 
-    private Long userId;
+    private static Long userId;
 
-    private Long creditCardId;
+    private static Long creditCardId;
 
     @Before
     public void setup() {
