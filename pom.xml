@@ -23,6 +23,7 @@
     <module>run</module>
     <module>creditService</module>
     <module>recordFacade</module>
+    <module>recordService</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>
