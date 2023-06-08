@@ -8,6 +8,7 @@ import com.stori.datamodel.repository.CreditCardRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -31,16 +32,16 @@ public class CreditCardService implements CreditCardServiceBase {
         }
     }
 
+    @Transactional(timeout = 30, isolation = Isolation.REPEATABLE_READ)
     @Override
     public boolean setCreditCardStatus(long creditCardId, CreditCardStatus status) {
-        CreditCard creditCard = getCreditCard(creditCardId);
-        if (creditCard == null) {
-            return false;
-        } else {
-            creditCard.setCreditCardStatus(status);
-            creditCardRepository.save(creditCard);
+        int edited = creditCardRepository.setCreditCardStatus(creditCardId, status);
+        if (edited == 1) {
             logger.info("Successfully set the status of the credit card with id: " + creditCardId + " to " + status);
             return true;
+        } else {
+            logger.info("Failed to set status for card with id: " + creditCardId);
+            return false;
         }
     }
 
@@ -55,17 +56,16 @@ public class CreditCardService implements CreditCardServiceBase {
 
     }
 
-    @Transactional(timeout = 30)
+    @Transactional(timeout = 30, isolation = Isolation.REPEATABLE_READ)
     @Override
     public boolean setCreditLimit(long creditCardId, int creditLimit) {
-        CreditCard creditCard = getCreditCard(creditCardId);
-        if (creditCard == null) {
-            return false;
-        } else {
-            creditCard.setCreditLimit(creditLimit);
-            creditCardRepository.save(creditCard);
+        int edited = creditCardRepository.setCreditLimit(creditCardId, creditLimit);
+        if (edited == 1) {
             logger.info("Successfully set credit limit for card with id: " + creditCardId);
             return true;
+        } else {
+            logger.info("Failed to set credit limit for card with id: " + creditCardId);
+            return false;
         }
     }
 

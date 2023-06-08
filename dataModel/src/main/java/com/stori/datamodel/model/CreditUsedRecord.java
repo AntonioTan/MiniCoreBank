@@ -1,12 +1,17 @@
 package com.stori.datamodel.model;
 
 
+import org.springframework.data.jpa.repository.Lock;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class CreditUsedRecord extends Record{
     private static final String content = "Credit Used Record";
+    public CreditUsedRecord() {
+        super(content, new Date());
+    }
     public CreditUsedRecord(CreditCard creditCard, int creditUsed) {
         super(content, new Date());
         this.creditCard = creditCard;

@@ -6,12 +6,14 @@ import com.stori.datamodel.model.CreditUsedRecord;
 public interface CreditRecordServiceBase {
 
     /**
-     * @param creditUsedRecord the new credit used record
+     * @param creditCardId credit card id
+     * @param creditUsed credit to use
      */
-    public abstract void addCreditUsedRecord(CreditUsedRecord creditUsedRecord);
+    public abstract void addCreditUsedRecord(Long creditCardId, int creditUsed);
 
     /**
-     * @param creditReleaseRecord the credit release record
+     * @param creditCardId credit card id
+     * @param creditReleased credit to release
      */
-    public abstract void addCreditReleaseRecord(CreditReleasedRecord creditReleaseRecord);
+    public abstract void addCreditReleaseRecord(Long creditCardId, int creditReleased);
 }

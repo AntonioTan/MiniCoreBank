@@ -22,4 +22,7 @@ public class CreditReleasedRecord extends Record{
         this.creditReleased = creditReleased;
     }
 
+    public void setCreditCard(CreditCard creditCard) {
+        this.creditCard = creditCard;
+    }
 }

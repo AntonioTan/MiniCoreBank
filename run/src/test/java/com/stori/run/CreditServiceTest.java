@@ -30,6 +30,8 @@ public class CreditServiceTest {
 
     private static boolean initialized = true;
 
+    private static Long concurrentUserId;
+
     private static Long userId;
 
     private static Long creditCardId;
@@ -40,13 +42,24 @@ public class CreditServiceTest {
 
     private final static int creditReleased = 1500;
 
+    private static Long concurrentCreditCardId;
+
+
+    private final static int concurrentInitialCreditLimit = 1500;
+    private final static int concurrentCreditUsed = 1000;
+    private final static int concurrentCreditReleased = 1000;
+
+
+
     @Before
     public void setup() {
         if (initialized) {
             userId = userService.addUser("Tianyi Tan");
             creditCardId = userService.addCreditCard(userId);
-            initialized = false;
             creditCardService.setCreditLimit(creditCardId, initialCreditLimit);
+            concurrentUserId = userService.addUser("Frey");
+            concurrentCreditCardId = userService.addCreditCard(concurrentUserId);
+            initialized = false;
         }
     }
 
@@ -72,5 +85,33 @@ public class CreditServiceTest {
         creditService.releaseCredit(creditCardId, creditReleased);
         remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed + creditReleased, remainingCredit);
+    }
+
+    @Test
+    public void testCshouldHandleConcurrentRequest() {
+        creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.ACTIVE);
+        creditCardService.setCreditLimit(concurrentCreditCardId,  concurrentInitialCreditLimit);
+        Thread threadA = new Thread() {
+            @Override
+            public void run() {
+                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed);
+            }
+        };
+
+        Thread threadB = new Thread() {
+            @Override
+            public void run() {
+                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed);
+            }
+        };
+        threadA.start();
+        threadB.start();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int remainingCredit = creditService.getRemainingCredit(concurrentCreditCardId);
+        Assert.assertEquals(remainingCredit, concurrentInitialCreditLimit-concurrentCreditUsed);
     }
 }

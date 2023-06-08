@@ -49,7 +49,7 @@ public class CreditCard {
         this.creditUsed = 0;
     }
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void setCreditLimit(int creditLimit) {
         this.creditLimit = creditLimit;
     }
@@ -81,7 +81,7 @@ public class CreditCard {
         return this.creditUsed;
     }
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void setCreditUsed(int creditUsed) {
         this.creditUsed = creditUsed;
     }
