@@ -3,7 +3,7 @@ package com.stori.run;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.bankuserservicefacade.CreditCardStatus;
+import com.stori.datamodel.CreditCardStatus;
 import com.stori.bankuserservicefacade.UserServiceBase;
 import org.junit.Assert;
 import org.junit.Before;

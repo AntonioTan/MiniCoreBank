@@ -1,6 +1,6 @@
 package com.stori.datamodel.repository;
 
-import com.stori.bankuserservicefacade.CreditCardStatus;
+import com.stori.datamodel.CreditCardStatus;
 import com.stori.datamodel.model.CreditCard;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -2,7 +2,7 @@ package com.stori.bankuserservice;
 
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.bankuserservicefacade.CreditCardStatus;
+import com.stori.datamodel.CreditCardStatus;
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.repository.CreditCardRepository;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +22,8 @@ public class CreditCardService implements CreditCardServiceBase {
 
     private final static Logger logger = LogManager.getLogger(CreditCard.class);
 
-    private CreditCard getCreditCard(long creditCardId) {
+    @Override
+    public CreditCard getCreditCard(Long creditCardId) {
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(creditCardId);
         if (!optionalCreditCard.isPresent()) {
             logger.error("Failed to get credit card by id: " + creditCardId);

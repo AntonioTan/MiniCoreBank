@@ -1,6 +1,8 @@
 package com.stori.recordservice;
 
+import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
+import com.stori.bankuserservicefacade.CreditCardServiceBase;
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.model.CreditReleasedRecord;
 import com.stori.datamodel.model.CreditUsedRecord;
@@ -29,22 +31,12 @@ public class CreditRecordService implements CreditRecordServiceBase {
     @Resource
     private CreditReleaseRecordRepository creditReleaseRecordRepository;
 
-    @Resource
-    private CreditCardRepository creditCardRepository;
-
-    private CreditCard getCreditCard(long creditCardId) {
-        Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(creditCardId);
-        if (optionalCreditCard.isPresent()) {
-            return optionalCreditCard.get();
-        } else {
-            logger.error("Failed to find credit card by id: " + creditCardId);
-            return null;
-        }
-    }
+    @SofaReference(uniqueId = "creditCardService")
+    private CreditCardServiceBase creditCardService;
 
     @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = {Exception.class})
     public void addCreditUsedRecord(Long creditCardId, int creditUsed) {
-        CreditCard creditCard = getCreditCard(creditCardId);
+        CreditCard creditCard = creditCardService.getCreditCard(creditCardId);
         if(creditCard==null) {
             logger.warn("Failed to add used credit");
             return ;
@@ -57,7 +49,7 @@ public class CreditRecordService implements CreditRecordServiceBase {
 
     @Transactional(isolation = Isolation.REPEATABLE_READ)
     public void addCreditReleaseRecord(Long creditCardId, int creditReleased) {
-        CreditCard creditCard = getCreditCard(creditCardId);
+        CreditCard creditCard = creditCardService.getCreditCard(creditCardId);
         if(creditCard==null) {
             logger.warn("Failed to add used credit");
             return ;

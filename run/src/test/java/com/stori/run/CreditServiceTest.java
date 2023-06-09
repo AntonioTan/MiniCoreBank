@@ -2,14 +2,13 @@ package com.stori.run;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.bankuserservicefacade.CreditCardStatus;
+import com.stori.datamodel.CreditCardStatus;
 import com.stori.bankuserservicefacade.UserServiceBase;
 import com.stori.creditfacade.CreditServiceBase;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.jupiter.api.Order;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.context.SpringBootTest;

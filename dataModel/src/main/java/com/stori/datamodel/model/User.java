@@ -9,7 +9,6 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GenericGenerator(name = "native", strategy = "native")
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 

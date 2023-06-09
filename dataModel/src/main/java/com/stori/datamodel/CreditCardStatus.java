@@ -1,4 +1,4 @@
-package com.stori.bankuserservicefacade;
+package com.stori.datamodel;
 
 public enum CreditCardStatus {
     INIT, ACTIVE, BLOCK, DISABLE;

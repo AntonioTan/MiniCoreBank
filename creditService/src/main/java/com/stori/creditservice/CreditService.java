@@ -3,23 +3,18 @@ package com.stori.creditservice;
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.bankuserservicefacade.CreditCardStatus;
+import com.stori.datamodel.CreditCardStatus;
 import com.stori.creditfacade.CreditServiceBase;
-import com.stori.creditservice.exception.AddCreditUsedException;
 import com.stori.datamodel.model.CreditCard;
-import com.stori.datamodel.model.CreditReleasedRecord;
-import com.stori.datamodel.model.CreditUsedRecord;
 import com.stori.datamodel.repository.CreditCardRepository;
 import com.stori.recordfacade.CreditRecordServiceBase;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.sql.SQLException;
 import java.util.Optional;
 
 @Service
@@ -48,26 +43,30 @@ public class CreditService implements CreditServiceBase {
 
     @Override
     @Transactional(timeout = 30, rollbackFor = {Exception.class}, isolation = Isolation.REPEATABLE_READ)
-    public void addCreditUsed(long creditCardId, int creditUsed) {
+    public boolean addCreditUsed(long creditCardId, int creditUsed) {
         int edited = creditCardRepository.addCreditUsed(creditCardId, creditUsed, CreditCardStatus.ACTIVE);
         if (edited == 1) {
             logger.info("Added " + creditUsed + " to credit card with id: " + creditCardId);
             creditRecordService.addCreditUsedRecord(creditCardId, creditUsed);
             logger.info("Saved credit used record");
+            return true;
         } else {
             logger.warn("Credit card with id: " + creditCardId + " failed to add " + creditUsed + " used credit");
+            return false;
         }
     }
 
     @Override
     @Transactional(timeout = 30, isolation = Isolation.REPEATABLE_READ)
-    public void releaseCredit(long creditCardId, int creditReleased) {
+    public boolean releaseCredit(long creditCardId, int creditReleased) {
         int edited = creditCardRepository.addCreditUsed(creditCardId, -creditReleased, CreditCardStatus.ACTIVE);
         if(edited == 1) {
             logger.info("Added " + creditReleased + " to credit card with id " + creditCardId);
             creditRecordService.addCreditReleaseRecord(creditCardId, creditReleased);
+            return true;
         } else {
             logger.warn("Credit card with id: " + creditCardId + " failed to add " + creditReleased + " released credit");
+            return false;
         }
     }
 

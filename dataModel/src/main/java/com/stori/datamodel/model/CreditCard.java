@@ -1,7 +1,6 @@
 package com.stori.datamodel.model;
 
-import com.stori.bankuserservicefacade.CreditCardStatus;
-import org.hibernate.annotations.GenericGenerator;
+import com.stori.datamodel.CreditCardStatus;
 import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.*;

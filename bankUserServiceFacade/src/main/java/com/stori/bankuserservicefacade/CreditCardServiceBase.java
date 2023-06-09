@@ -1,7 +1,10 @@
 package com.stori.bankuserservicefacade;
 
-public interface CreditCardServiceBase {
+import com.stori.datamodel.CreditCardStatus;
+import com.stori.datamodel.model.CreditCard;
 
+public interface CreditCardServiceBase {
+    CreditCard getCreditCard(Long creditCardId);
     /**
      * set the status for the user
      * @param creditCardId the id of the credit card owned by the user
@@ -34,4 +37,5 @@ public interface CreditCardServiceBase {
      * @return the current credit limit of the credit card owned by the user
      */
     public abstract int getCreditLimit(long creditCardId);
+
 }

@@ -24,6 +24,9 @@
     <module>creditService</module>
     <module>recordFacade</module>
     <module>recordService</module>
+    <module>orderServiceFacade</module>
+    <module>orderService</module>
+    <module>merchantServiceFacade</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>
