@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
     @Modifying(clearAutomatically = true)
-    @Query("update CreditCard set creditLimit=:creditLimit where id=:creditCardId")
-    public int setCreditLimit(@Param("creditCardId") Long id, @Param("creditLimit") int creditLimit);
+    @Query("update CreditCard set creditLimit=:creditLimit where id=:creditCardId and creditCardStatus=:#{#creditCardStatus}")
+    public int setCreditLimit(@Param("creditCardId") Long id, @Param("creditLimit") int creditLimit, @Param("creditCardStatus") CreditCardStatus creditCardStatus);
 
     @Modifying(clearAutomatically = true)
     @Query("update CreditCard set creditUsed=creditUsed+:creditUsed where id=:creditCardId and creditUsed+:creditUsed<=creditLimit and creditCardStatus=:#{#creditCardStatus}")

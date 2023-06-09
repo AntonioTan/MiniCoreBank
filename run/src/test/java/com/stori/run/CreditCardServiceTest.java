@@ -25,15 +25,21 @@ public class CreditCardServiceTest {
 
     private static Long userId;
 
+    private static Long concurrentUserId;
+
     private static Long creditCardId;
+
+    private static Long concurrentCreditCardId;
 
     @Before
     public void setup() {
-        if(initialized) {
+        if (initialized) {
             userId = userService.addUser("Tianyi Tan");
             creditCardId = userService.addCreditCard(userId);
             initialized = false;
         }
+        concurrentUserId = userService.addUser("Frey");
+        concurrentCreditCardId = userService.addCreditCard(concurrentUserId);
     }
 
     @Test
@@ -54,6 +60,61 @@ public class CreditCardServiceTest {
         Assert.assertTrue(setStatusRst);
         CreditCardStatus newStatus = creditCardService.getStatus(creditCardId);
         Assert.assertEquals(nextStatus, newStatus);
+    }
+
+    @Test
+    public void shouldChangeLimitConcurrently() {
+        creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.ACTIVE);
+        int nextCreditLimit = 2000;
+        CreditCardStatus nextCreditCardStatus = CreditCardStatus.BLOCK;
+        Thread a = new Thread() {
+            @Override
+            public void run() {
+                creditCardService.setCreditLimit(concurrentCreditCardId, nextCreditLimit);
+            }
+        };
+        Thread b = new Thread() {
+            @Override
+            public void run() {
+                creditCardService.setCreditCardStatus(concurrentCreditCardId, nextCreditCardStatus);
+            }
+        };
+        a.start();
+        b.start();
+        try {
+            a.join();
+            b.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        int curCreditLimit = creditCardService.getCreditLimit(concurrentCreditCardId);
+        CreditCardStatus curCreditCardStatus = creditCardService.getStatus(concurrentCreditCardId);
+        Assert.assertTrue(curCreditLimit == nextCreditLimit || curCreditLimit == 0);
+        Assert.assertSame(curCreditCardStatus, CreditCardStatus.BLOCK);
+    }
+
+    @Test
+    public void shouldChangeCardLimitConcurrently() {
+        creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.ACTIVE);
+        int aCreditLimit = 1000;
+        int bCreditLimit = 2000;
+        Thread a = new Thread() {
+            @Override
+            public void run() {
+                creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.ACTIVE);
+                creditCardService.setCreditLimit(concurrentCreditCardId, aCreditLimit);
+            }
+        };
+        Thread b = new Thread() {
+            @Override
+            public void run() {
+                creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.BLOCK);
+                creditCardService.setCreditLimit(concurrentCreditCardId, bCreditLimit);
+            }
+        };
+        a.start();
+        b.start();
+//        Assert.assertSame(CreditCardStatus.BLOCK, creditCardService.getStatus(creditCardId));
     }
 
 

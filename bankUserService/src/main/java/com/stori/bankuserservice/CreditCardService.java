@@ -59,7 +59,7 @@ public class CreditCardService implements CreditCardServiceBase {
     @Transactional(timeout = 30, isolation = Isolation.REPEATABLE_READ)
     @Override
     public boolean setCreditLimit(long creditCardId, int creditLimit) {
-        int edited = creditCardRepository.setCreditLimit(creditCardId, creditLimit);
+        int edited = creditCardRepository.setCreditLimit(creditCardId, creditLimit, CreditCardStatus.ACTIVE);
         if (edited == 1) {
             logger.info("Successfully set credit limit for card with id: " + creditCardId);
             return true;
