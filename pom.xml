@@ -27,6 +27,9 @@
     <module>orderServiceFacade</module>
     <module>orderService</module>
     <module>merchantServiceFacade</module>
+    <module>merchantService</module>
+    <module>orderServiceFacade</module>
+    <module>orderService</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>
