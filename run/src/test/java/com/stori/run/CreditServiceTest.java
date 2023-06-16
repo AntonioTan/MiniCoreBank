@@ -55,6 +55,7 @@ public class CreditServiceTest {
         if (initialized) {
             userId = userService.addUser("Tianyi Tan");
             creditCardId = userService.addCreditCard(userId);
+            creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
             creditCardService.setCreditLimit(creditCardId, initialCreditLimit);
             concurrentUserId = userService.addUser("Frey");
             concurrentCreditCardId = userService.addCreditCard(concurrentUserId);
@@ -64,6 +65,7 @@ public class CreditServiceTest {
 
     @Test
     public void testAshouldAddUsedCredit() {
+        creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.BLOCK);
         creditService.addCreditUsed(creditCardId, creditUsed);
         int remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit, remainingCredit);
@@ -111,6 +113,6 @@ public class CreditServiceTest {
             throw new RuntimeException(e);
         }
         int remainingCredit = creditService.getRemainingCredit(concurrentCreditCardId);
-        Assert.assertEquals(remainingCredit, concurrentInitialCreditLimit-concurrentCreditUsed);
+        Assert.assertEquals(concurrentInitialCreditLimit-concurrentCreditUsed, remainingCredit);
     }
 }

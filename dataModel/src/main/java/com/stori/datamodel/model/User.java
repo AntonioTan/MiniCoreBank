@@ -26,7 +26,7 @@ public class User {
     }
 
     @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "credit_card_id", referencedColumnName = "id", updatable = false)
+    @JoinColumn(name = "credit_card_id", referencedColumnName = "id")
     private CreditCard creditCard;
 
 

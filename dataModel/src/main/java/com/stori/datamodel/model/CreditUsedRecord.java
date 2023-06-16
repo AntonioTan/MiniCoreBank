@@ -25,4 +25,7 @@ public class CreditUsedRecord extends Record{
     @Column(name = "credit_used", nullable = false, updatable = false)
     private int creditUsed;
 
+//    @Column(name = "request_id", unique = true, nullable = false, updatable = false)
+//    private long requestId;
+
 }

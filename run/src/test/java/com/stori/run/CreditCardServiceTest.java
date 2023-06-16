@@ -7,13 +7,16 @@ import com.stori.datamodel.CreditCardStatus;
 import com.stori.bankuserservicefacade.UserServiceBase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest(classes = CreditCardServiceApplication.class)
 @RunWith(SpringRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CreditCardServiceTest {
     @SofaReference(uniqueId = "userService")
     private UserServiceBase userService;
@@ -43,7 +46,7 @@ public class CreditCardServiceTest {
     }
 
     @Test
-    public void shouldSetCreditLimit() {
+    public void testBShouldSetCreditLimit() {
         int creditLimit = 1000;
         boolean setCreditLimitRst = creditCardService.setCreditLimit(creditCardId, creditLimit);
         Assert.assertTrue(setCreditLimitRst);
@@ -52,7 +55,7 @@ public class CreditCardServiceTest {
     }
 
     @Test
-    public void shouldChangeStatus() {
+    public void testAShouldChangeStatus() {
         CreditCardStatus nextStatus = CreditCardStatus.ACTIVE;
         CreditCardStatus curStatus = creditCardService.getStatus(creditCardId);
         Assert.assertEquals(curStatus, CreditCardStatus.INIT);
