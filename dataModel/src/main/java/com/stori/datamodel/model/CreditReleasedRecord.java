@@ -16,10 +16,14 @@ public class CreditReleasedRecord extends Record{
     @Column(name = "credit_released", nullable = false, updatable = false)
     private int creditReleased;
 
-    public CreditReleasedRecord(CreditCard creditCard, int creditReleased) {
-        super(content, new Date());
+    public CreditReleasedRecord(CreditCard creditCard, int creditReleased, long requestId) {
+        super(content, new Date(), requestId);
         this.creditCard = creditCard;
         this.creditReleased = creditReleased;
+    }
+
+    public CreditReleasedRecord() {
+        super();
     }
 
     public void setCreditCard(CreditCard creditCard) {

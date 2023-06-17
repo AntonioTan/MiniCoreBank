@@ -1,11 +1,11 @@
 package com.stori.datamodel.repository;
 
-import com.stori.datamodel.model.Order;
+import com.stori.datamodel.model.BizOrder;
+import com.stori.datamodel.model.Record;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import javax.annotation.Resource;
 
 @Resource
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<BizOrder, Long> {
 }

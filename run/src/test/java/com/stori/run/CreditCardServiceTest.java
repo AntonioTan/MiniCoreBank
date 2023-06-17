@@ -45,14 +45,6 @@ public class CreditCardServiceTest {
         concurrentCreditCardId = userService.addCreditCard(concurrentUserId);
     }
 
-    @Test
-    public void testBShouldSetCreditLimit() {
-        int creditLimit = 1000;
-        boolean setCreditLimitRst = creditCardService.setCreditLimit(creditCardId, creditLimit);
-        Assert.assertTrue(setCreditLimitRst);
-        int newCreditLimit = creditCardService.getCreditLimit(creditCardId);
-        Assert.assertEquals(newCreditLimit, creditLimit);
-    }
 
     @Test
     public void testAShouldChangeStatus() {
@@ -64,6 +56,16 @@ public class CreditCardServiceTest {
         CreditCardStatus newStatus = creditCardService.getStatus(creditCardId);
         Assert.assertEquals(nextStatus, newStatus);
     }
+
+    @Test
+    public void testBShouldSetCreditLimit() {
+        int creditLimit = 1000;
+        boolean setCreditLimitRst = creditCardService.setCreditLimit(creditCardId, creditLimit);
+        Assert.assertTrue(setCreditLimitRst);
+        int newCreditLimit = creditCardService.getCreditLimit(creditCardId);
+        Assert.assertEquals(newCreditLimit, creditLimit);
+    }
+
 
     @Test
     public void shouldChangeLimitConcurrently() {

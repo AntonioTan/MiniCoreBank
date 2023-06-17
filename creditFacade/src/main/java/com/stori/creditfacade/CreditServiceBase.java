@@ -8,7 +8,7 @@ public interface CreditServiceBase {
      * @param creditUsed the credit utilization
      * @return whether the operation is successful or not
      */
-    public abstract boolean addCreditUsed(long creditCardId, int creditUsed);
+    public abstract boolean addCreditUsed(long creditCardId, int creditUsed, long requestId);
 
 
     /**
@@ -18,7 +18,7 @@ public interface CreditServiceBase {
      * @param creditReleased the credit utilization released in this operation
      * @return whether the operation is successful or not
      */
-    public abstract boolean releaseCredit(long creditCardId, int creditReleased);
+    public abstract boolean releaseCredit(long creditCardId, int creditReleased, long requestId);
 
 
     /**

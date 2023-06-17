@@ -15,4 +15,18 @@ public class Merchant {
 
     @Column(name = "name", nullable = false)
     private String name;
+
+    public Merchant(){};
+
+    public Merchant(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

@@ -12,10 +12,11 @@ public class CreditUsedRecord extends Record{
     public CreditUsedRecord() {
         super(content, new Date());
     }
-    public CreditUsedRecord(CreditCard creditCard, int creditUsed) {
+    public CreditUsedRecord(CreditCard creditCard, int creditUsed, long requestId) {
         super(content, new Date());
         this.creditCard = creditCard;
         this.creditUsed = creditUsed;
+        this.requestId = requestId;
     }
 
     @OneToOne()
@@ -25,7 +26,5 @@ public class CreditUsedRecord extends Record{
     @Column(name = "credit_used", nullable = false, updatable = false)
     private int creditUsed;
 
-//    @Column(name = "request_id", unique = true, nullable = false, updatable = false)
-//    private long requestId;
 
 }

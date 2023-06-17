@@ -9,12 +9,16 @@ import java.util.Date;
 @Entity
 public class CancelOrderRecord extends Record{
     public static final String content = "Cancel Order Record";
-    public CancelOrderRecord() {
-        super(content, new Date());
+    public CancelOrderRecord(Long requestId) {
+        super(content, new Date(), requestId);
     }
 
     @Column(name = "order_id", updatable = false, insertable = false)
     private Long orderId;
+
+    public CancelOrderRecord() {
+
+    }
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;

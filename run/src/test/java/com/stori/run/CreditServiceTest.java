@@ -29,6 +29,8 @@ public class CreditServiceTest {
 
     private static boolean initialized = true;
 
+    private static long requestId = 0L;
+
     private static Long concurrentUserId;
 
     private static Long userId;
@@ -64,45 +66,58 @@ public class CreditServiceTest {
     }
 
     @Test
-    public void testAshouldAddUsedCredit() {
+    public void testAShouldAddUsedCredit() {
         creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.BLOCK);
-        creditService.addCreditUsed(creditCardId, creditUsed);
+        creditService.addCreditUsed(creditCardId, creditUsed, requestId++);
         int remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit, remainingCredit);
         creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
-        creditService.addCreditUsed(creditCardId, creditUsed);
+        creditService.addCreditUsed(creditCardId, creditUsed, requestId++);
         remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed, remainingCredit);
     }
 
 
     @Test
-    public void testBshouldReleaseCredit() {
+    public void testBShouldReleaseCredit() {
         creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.BLOCK);
-        creditService.releaseCredit(creditCardId, creditReleased);
+        creditService.releaseCredit(creditCardId, creditReleased, requestId++);
         int remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed, remainingCredit);
         creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
-        creditService.releaseCredit(creditCardId, creditReleased);
+        creditService.releaseCredit(creditCardId, creditReleased, requestId++);
         remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed + creditReleased, remainingCredit);
     }
 
     @Test
-    public void testCshouldHandleConcurrentRequest() {
+    public void testCShouldHandleDuplicateRequest() {
+        boolean addRst = creditService.addCreditUsed(creditCardId, creditUsed, requestId);
+        Assert.assertTrue(addRst);
+        boolean addRs2 = creditService.addCreditUsed(creditCardId, creditUsed, requestId);
+        Assert.assertFalse(addRs2);
+        boolean releaseRst = creditService.releaseCredit(creditCardId, creditUsed, requestId);
+        Assert.assertTrue(releaseRst);
+        boolean releaseRst2 = creditService.releaseCredit(creditCardId, creditUsed, requestId);
+        Assert.assertFalse(releaseRst2);
+        int remainingCredit = creditService.getRemainingCredit(creditCardId);
+        Assert.assertEquals(initialCreditLimit-creditUsed+creditReleased, remainingCredit);
+    }
+    @Test
+    public void testDShouldHandleConcurrentRequest() {
         creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.ACTIVE);
         creditCardService.setCreditLimit(concurrentCreditCardId,  concurrentInitialCreditLimit);
         Thread threadA = new Thread() {
             @Override
             public void run() {
-                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed);
+                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed, requestId++);
             }
         };
 
         Thread threadB = new Thread() {
             @Override
             public void run() {
-                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed);
+                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed, requestId++);
             }
         };
         threadA.start();
@@ -114,5 +129,26 @@ public class CreditServiceTest {
         }
         int remainingCredit = creditService.getRemainingCredit(concurrentCreditCardId);
         Assert.assertEquals(concurrentInitialCreditLimit-concurrentCreditUsed, remainingCredit);
+        Thread threadC = new Thread() {
+            @Override
+            public void run() {
+                creditService.releaseCredit(concurrentCreditCardId, concurrentCreditReleased, requestId++);
+            }
+        };
+        Thread threadD = new Thread() {
+            @Override
+            public void run() {
+                creditService.releaseCredit(concurrentCreditCardId, concurrentCreditReleased, requestId++);
+            }
+        };
+        threadC.start();
+        threadD.start();
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        remainingCredit = creditService.getRemainingCredit(concurrentCreditCardId);
+        Assert.assertEquals(concurrentInitialCreditLimit-concurrentCreditUsed+concurrentCreditReleased*2, remainingCredit);
     }
 }

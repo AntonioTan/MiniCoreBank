@@ -1,19 +1,19 @@
 package com.stori.orderservicefacade;
 
 
-import com.stori.datamodel.model.Order;
+import com.stori.datamodel.model.BizOrder;
 
 public interface OrderServiceBase {
-    Order getOrder(Long orderId);
+    BizOrder getOrder(Long orderId);
     /**
      * create a new order
      *
      * @param creditCardId credit card id
      * @param merchantId   merchant id
      * @param amount       amount of the order
-     * @return whether the operation is successful or not
+     * @return order id if the operation is successful otherwise null
      */
-    boolean createOrder(Long creditCardId, Long merchantId, int amount);
+    Long createOrder(Long creditCardId, Long merchantId, int amount, long requestId);
 
 
     /**
@@ -22,12 +22,12 @@ public interface OrderServiceBase {
      * @param orderId the order id
      * @return whether the operation is successful or not
      */
-    boolean cancelOrder(Long orderId);
+    boolean cancelOrder(Long orderId, Long requestId);
 
     /**
      * @param orderId order id
      * @return the found order
      */
-     Order findOrder(Long orderId);
+     BizOrder findOrder(Long orderId);
 }
 

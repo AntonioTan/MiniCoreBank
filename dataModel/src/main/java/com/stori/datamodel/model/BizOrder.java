@@ -1,14 +1,14 @@
 package com.stori.datamodel.model;
 
 
-import org.hibernate.annotations.GenericGenerator;
+import com.stori.datamodel.OrderStatus;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Order")
-public class Order {
+@Table(name = "BizOrder")
+public class BizOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
@@ -29,8 +29,13 @@ public class Order {
     @Column(updatable = false, nullable = false)
     private Date timestamp;
 
-    public Order() {
+
+    @Column(name = "order_status", nullable = false)
+    private OrderStatus orderStatus;
+
+    public BizOrder() {
         this.timestamp = new Date();
+        this.orderStatus = OrderStatus.ACTIVE;
     }
 
 
@@ -48,5 +53,25 @@ public class Order {
 
     public Long getId() {
         return id;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public CreditCard getCreditCard() {
+        return creditCard;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }

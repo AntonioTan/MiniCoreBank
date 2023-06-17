@@ -12,13 +12,17 @@ public class CreateOrderRecord extends Record{
 
     @OneToOne
     @JoinColumn(name="order_id", referencedColumnName = "id", updatable = false)
-    private Order order;
+    private BizOrder bizOrder;
+    public CreateOrderRecord(Long requestId) {
+        super(content, new Date(), requestId);
+    }
+
     public CreateOrderRecord() {
-        super(content, new Date());
+
     }
 
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrder(BizOrder bizOrder) {
+        this.bizOrder = bizOrder;
     }
 }
