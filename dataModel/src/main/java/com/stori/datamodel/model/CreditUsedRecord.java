@@ -4,10 +4,11 @@ package com.stori.datamodel.model;
 import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class CreditUsedRecord extends Record{
+public class CreditUsedRecord extends Record implements Serializable {
     private static final String content = "Credit Used Record";
     public CreditUsedRecord() {
         super(content, new Date());
