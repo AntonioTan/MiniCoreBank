@@ -1,6 +1,6 @@
 package com.stori.datamodel.model;
 
-import com.stori.datamodel.CreditCardStatus;
+import com.stori.datamodel.CreditCardStatusEnum;
 import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.*;
@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-@Table(name = "CREDIT_CARD")
+@Table(name = "credit_card")
 public class CreditCard {
     private final static Calendar cal = Calendar.getInstance();
     private final static int CREDIT_CARD_VALID_PERIOD = 10;
@@ -36,14 +36,14 @@ public class CreditCard {
     private int creditUsed;
 
     @Column(name = "credit_card_status", nullable = false)
-    private CreditCardStatus creditCardStatus;
+    private CreditCardStatusEnum creditCardStatus;
 
     public CreditCard() {
         this.startDate = new Date();
         cal.setTime(this.startDate);
         cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + CREDIT_CARD_VALID_PERIOD);
         this.endDate = cal.getTime();
-        this.creditCardStatus = CreditCardStatus.INIT;
+        this.creditCardStatus = CreditCardStatusEnum.INIT;
         this.creditLimit = 0;
         this.creditUsed = 0;
     }
@@ -62,7 +62,7 @@ public class CreditCard {
     }
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public void setCreditCardStatus(CreditCardStatus creditCardStatus) {
+    public void setCreditCardStatus(CreditCardStatusEnum creditCardStatus) {
         this.creditCardStatus = creditCardStatus;
     }
 
@@ -91,7 +91,7 @@ public class CreditCard {
 
 //    @Lock(LockModeType.PESSIMISTIC_READ)
 
-    public CreditCardStatus getCreditCardStatus() {
+    public CreditCardStatusEnum getCreditCardStatus() {
         return this.creditCardStatus;
     }
 

@@ -1,14 +1,14 @@
 package com.stori.run;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
-import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.bankuserservicefacade.UserServiceBase;
-import com.stori.creditfacade.CreditServiceBase;
-import com.stori.datamodel.CreditCardStatus;
-import com.stori.datamodel.OrderStatus;
+import com.stori.bankuserservicefacade.CreditCardService;
+import com.stori.bankuserservicefacade.UserService;
+import com.stori.creditfacade.CreditService;
+import com.stori.datamodel.CreditCardStatusEnum;
+import com.stori.datamodel.OrderStatusEnum;
 import com.stori.datamodel.model.BizOrder;
-import com.stori.merchantservicefacade.MerchantServiceBase;
-import com.stori.orderservicefacade.OrderServiceBase;
+import com.stori.merchantservicefacade.MerchantService;
+import com.stori.orderservicefacade.OrderService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -24,19 +24,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class BizOrderServiceTest {
 
     @SofaReference(uniqueId = "creditService")
-    CreditServiceBase creditService;
+    CreditService creditService;
 
     @SofaReference(uniqueId = "userService")
-    private UserServiceBase userService;
+    private UserService userService;
 
     @SofaReference(uniqueId = "creditCardService")
-    private CreditCardServiceBase creditCardService;
+    private CreditCardService creditCardService;
 
     @SofaReference(uniqueId = "orderService")
-    private OrderServiceBase orderService;
+    private OrderService orderService;
 
     @SofaReference(uniqueId = "merchantService")
-    private MerchantServiceBase merchantService;
+    private MerchantService merchantService;
 
     private static boolean initialized = true;
 
@@ -73,13 +73,13 @@ public class BizOrderServiceTest {
     @Before
     public void setup() {
         if (initialized) {
-            userId = userService.addUser("Tianyi Tan");
-            creditCardId = userService.addCreditCard(userId);
-            creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
+            userId = userService.saveUser("Tianyi Tan");
+            creditCardId = userService.saveCreditCard(userId);
+            creditCardService.updateCreditCardStatus(creditCardId, CreditCardStatusEnum.ACTIVE);
             creditCardService.setCreditLimit(creditCardId, initialCreditLimit);
-            merchantId = merchantService.createMerchant(merchantName);
-            concurrentUserId = userService.addUser("Frey");
-            concurrentCreditCardId = userService.addCreditCard(concurrentUserId);
+            merchantId = merchantService.saveMerchant(merchantName);
+            concurrentUserId = userService.saveUser("Frey");
+            concurrentCreditCardId = userService.saveCreditCard(concurrentUserId);
             initialized = false;
         }
     }
@@ -88,7 +88,7 @@ public class BizOrderServiceTest {
         orderId = orderService.createOrder(creditCardId, merchantId, orderAmount, requestId++);
         Assert.assertNotEquals(orderId, null);
         BizOrder bizOrder =  orderService.getOrder(orderId);
-        Assert.assertEquals(OrderStatus.ACTIVE, bizOrder.getOrderStatus());
+        Assert.assertEquals(OrderStatusEnum.ACTIVE, bizOrder.getOrderStatus());
         Assert.assertEquals(merchantName, bizOrder.getMerchant().getName());
     }
 
@@ -109,7 +109,7 @@ public class BizOrderServiceTest {
         boolean cancelRst = orderService.cancelOrder(orderId, requestId++);
         Assert.assertTrue(cancelRst);
         BizOrder bizOrder = orderService.getOrder(orderId);
-        Assert.assertSame(OrderStatus.CANCEL, bizOrder.getOrderStatus());
+        Assert.assertSame(OrderStatusEnum.CANCEL, bizOrder.getOrderStatus());
     }
 
 
@@ -137,6 +137,6 @@ public class BizOrderServiceTest {
             throw new RuntimeException(e);
         }
         BizOrder order = orderService.getOrder(concurrentOrderId);
-        Assert.assertEquals(order.getOrderStatus(), OrderStatus.CANCEL);
+        Assert.assertEquals(order.getOrderStatus(), OrderStatusEnum.CANCEL);
     }
 }

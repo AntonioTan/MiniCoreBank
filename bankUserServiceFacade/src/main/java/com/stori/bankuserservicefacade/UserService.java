@@ -1,6 +1,6 @@
 package com.stori.bankuserservicefacade;
 
-public interface UserServiceBase {
+public interface UserService {
 
 
     /**
@@ -9,7 +9,7 @@ public interface UserServiceBase {
      * @param name the username
      * @return -1 if operation failed or user id if otherwise
      */
-    public abstract Long addUser(String name);
+    public abstract Long saveUser(String name);
 
 
     /**
@@ -24,12 +24,12 @@ public interface UserServiceBase {
      * @param userId the user id
      * @return the account balance of the user account
      */
-    public abstract int getAccountBalance(long userId);
+    public abstract Integer getAccountBalance(Long userId);
 
     /**
      * @param userId the user id
      * @return credit card id if operation is successful otherwise return -1
      */
-    public abstract Long addCreditCard(long userId);
+    public abstract Long saveCreditCard(Long userId);
 
 }

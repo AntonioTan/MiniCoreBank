@@ -1,5 +1,5 @@
 package com.stori.datamodel;
 
-public enum CreditCardStatus {
+public enum CreditCardStatusEnum {
     INIT, ACTIVE, BLOCK, DISABLE;
 }

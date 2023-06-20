@@ -1,10 +1,10 @@
 package com.stori.run;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
-import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.datamodel.CreditCardStatus;
-import com.stori.bankuserservicefacade.UserServiceBase;
-import com.stori.creditfacade.CreditServiceBase;
+import com.stori.bankuserservicefacade.CreditCardService;
+import com.stori.datamodel.CreditCardStatusEnum;
+import com.stori.bankuserservicefacade.UserService;
+import com.stori.creditfacade.CreditService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -17,15 +17,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = CreditServiceApplication.class)
 @RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CreditServiceTest {
+public class CreditServiceImplTest {
     @SofaReference(uniqueId = "creditService")
-    CreditServiceBase creditService;
+    CreditService creditService;
 
     @SofaReference(uniqueId = "userService")
-    private UserServiceBase userService;
+    private UserService userService;
 
     @SofaReference(uniqueId = "creditCardService")
-    private CreditCardServiceBase creditCardService;
+    private CreditCardService creditCardService;
 
     private static boolean initialized = true;
 
@@ -55,24 +55,24 @@ public class CreditServiceTest {
     @Before
     public void setup() {
         if (initialized) {
-            userId = userService.addUser("Tianyi Tan");
-            creditCardId = userService.addCreditCard(userId);
-            creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
+            userId = userService.saveUser("Tianyi Tan");
+            creditCardId = userService.saveCreditCard(userId);
+            creditCardService.updateCreditCardStatus(creditCardId, CreditCardStatusEnum.ACTIVE);
             creditCardService.setCreditLimit(creditCardId, initialCreditLimit);
-            concurrentUserId = userService.addUser("Frey");
-            concurrentCreditCardId = userService.addCreditCard(concurrentUserId);
+            concurrentUserId = userService.saveUser("Frey");
+            concurrentCreditCardId = userService.saveCreditCard(concurrentUserId);
             initialized = false;
         }
     }
 
     @Test
     public void testAShouldAddUsedCredit() {
-        creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.BLOCK);
-        creditService.addCreditUsed(creditCardId, creditUsed, requestId++);
+        creditCardService.updateCreditCardStatus(creditCardId, CreditCardStatusEnum.BLOCK);
+        creditService.updateCreditUsed(creditCardId, creditUsed, requestId++);
         int remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit, remainingCredit);
-        creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
-        creditService.addCreditUsed(creditCardId, creditUsed, requestId++);
+        creditCardService.updateCreditCardStatus(creditCardId, CreditCardStatusEnum.ACTIVE);
+        creditService.updateCreditUsed(creditCardId, creditUsed, requestId++);
         remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed, remainingCredit);
     }
@@ -80,44 +80,44 @@ public class CreditServiceTest {
 
     @Test
     public void testBShouldReleaseCredit() {
-        creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.BLOCK);
-        creditService.releaseCredit(creditCardId, creditReleased, requestId++);
+        creditCardService.updateCreditCardStatus(creditCardId, CreditCardStatusEnum.BLOCK);
+        creditService.updateCreditReleased(creditCardId, creditReleased, requestId++);
         int remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed, remainingCredit);
-        creditCardService.setCreditCardStatus(creditCardId, CreditCardStatus.ACTIVE);
-        creditService.releaseCredit(creditCardId, creditReleased, requestId++);
+        creditCardService.updateCreditCardStatus(creditCardId, CreditCardStatusEnum.ACTIVE);
+        creditService.updateCreditReleased(creditCardId, creditReleased, requestId++);
         remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit - creditUsed + creditReleased, remainingCredit);
     }
 
     @Test
     public void testCShouldHandleDuplicateRequest() {
-        boolean addRst = creditService.addCreditUsed(creditCardId, creditUsed, requestId);
+        boolean addRst = creditService.updateCreditUsed(creditCardId, creditUsed, requestId);
         Assert.assertTrue(addRst);
-        boolean addRs2 = creditService.addCreditUsed(creditCardId, creditUsed, requestId);
+        boolean addRs2 = creditService.updateCreditUsed(creditCardId, creditUsed, requestId);
         Assert.assertFalse(addRs2);
-        boolean releaseRst = creditService.releaseCredit(creditCardId, creditUsed, requestId);
+        boolean releaseRst = creditService.updateCreditReleased(creditCardId, creditUsed, requestId);
         Assert.assertTrue(releaseRst);
-        boolean releaseRst2 = creditService.releaseCredit(creditCardId, creditUsed, requestId);
+        boolean releaseRst2 = creditService.updateCreditReleased(creditCardId, creditUsed, requestId);
         Assert.assertFalse(releaseRst2);
         int remainingCredit = creditService.getRemainingCredit(creditCardId);
         Assert.assertEquals(initialCreditLimit-creditUsed+creditReleased, remainingCredit);
     }
     @Test
     public void testDShouldHandleConcurrentRequest() {
-        creditCardService.setCreditCardStatus(concurrentCreditCardId, CreditCardStatus.ACTIVE);
+        creditCardService.updateCreditCardStatus(concurrentCreditCardId, CreditCardStatusEnum.ACTIVE);
         creditCardService.setCreditLimit(concurrentCreditCardId,  concurrentInitialCreditLimit);
         Thread threadA = new Thread() {
             @Override
             public void run() {
-                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed, requestId++);
+                creditService.updateCreditUsed(concurrentCreditCardId, concurrentCreditUsed, requestId++);
             }
         };
 
         Thread threadB = new Thread() {
             @Override
             public void run() {
-                creditService.addCreditUsed(concurrentCreditCardId, concurrentCreditUsed, requestId++);
+                creditService.updateCreditUsed(concurrentCreditCardId, concurrentCreditUsed, requestId++);
             }
         };
         threadA.start();
@@ -132,13 +132,13 @@ public class CreditServiceTest {
         Thread threadC = new Thread() {
             @Override
             public void run() {
-                creditService.releaseCredit(concurrentCreditCardId, concurrentCreditReleased, requestId++);
+                creditService.updateCreditReleased(concurrentCreditCardId, concurrentCreditReleased, requestId++);
             }
         };
         Thread threadD = new Thread() {
             @Override
             public void run() {
-                creditService.releaseCredit(concurrentCreditCardId, concurrentCreditReleased, requestId++);
+                creditService.updateCreditReleased(concurrentCreditCardId, concurrentCreditReleased, requestId++);
             }
         };
         threadC.start();

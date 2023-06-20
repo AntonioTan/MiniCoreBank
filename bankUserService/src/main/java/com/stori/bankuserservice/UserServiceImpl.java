@@ -2,13 +2,13 @@ package com.stori.bankuserservice;
 
 import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
-import com.stori.bankuserservicefacade.CreditCardServiceBase;
-import com.stori.bankuserservicefacade.UserServiceBase;
+import com.stori.bankuserservicefacade.CreditCardService;
+import com.stori.bankuserservicefacade.UserService;
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.model.User;
 import com.stori.datamodel.repository.UserRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,18 +18,18 @@ import java.util.Optional;
 
 @SofaService(uniqueId = "userService")
 @Service("userService")
-public class UserService implements UserServiceBase {
+public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = LogManager.getLogger(UserService.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @SofaReference(uniqueId = "creditCardService")
-    private CreditCardServiceBase creditCardService;
+    private CreditCardService creditCardService;
 
     @Resource
     private UserRepository userRepository;
 
     @Override
-    public Long addUser(String name) {
+    public Long saveUser(String name) {
         User user = new User(name);
         userRepository.save(user);
         return user.getId();
@@ -44,7 +44,7 @@ public class UserService implements UserServiceBase {
 
     @Override
     @Transactional(readOnly = true, timeout = 30)
-    public int getAccountBalance(long userId) {
+    public Integer getAccountBalance(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(!optionalUser.isPresent()) {
             logger.error("Failed to find user by id: " + userId);
@@ -57,7 +57,7 @@ public class UserService implements UserServiceBase {
 
     @Override
     @Transactional(timeout = 30)
-    public Long addCreditCard(long userId) {
+    public Long saveCreditCard(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(!optionalUser.isPresent()) {
             logger.error("Failed to find user by id: " + userId);

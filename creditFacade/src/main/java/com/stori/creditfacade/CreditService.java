@@ -1,6 +1,6 @@
 package com.stori.creditfacade;
 
-public interface CreditServiceBase {
+public interface CreditService {
     /**
      * add new credit used record for the credit card
      *
@@ -8,7 +8,7 @@ public interface CreditServiceBase {
      * @param creditUsed the credit utilization
      * @return whether the operation is successful or not
      */
-    public abstract boolean addCreditUsed(long creditCardId, int creditUsed, long requestId);
+    public abstract Boolean updateCreditUsed(Long creditCardId, Integer creditUsed, Long requestId);
 
 
     /**
@@ -18,12 +18,12 @@ public interface CreditServiceBase {
      * @param creditReleased the credit utilization released in this operation
      * @return whether the operation is successful or not
      */
-    public abstract boolean releaseCredit(long creditCardId, int creditReleased, long requestId);
+    public abstract Boolean updateCreditReleased(Long creditCardId, Integer creditReleased, Long requestId);
 
 
     /**
      * @return the remaining credit if credit card id is valid otherwise return -1
      */
-    public abstract int getRemainingCredit(long creditCardId);
+    public abstract Integer getRemainingCredit(Long creditCardId);
 
 }

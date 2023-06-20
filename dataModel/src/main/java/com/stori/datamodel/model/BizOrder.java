@@ -1,13 +1,13 @@
 package com.stori.datamodel.model;
 
 
-import com.stori.datamodel.OrderStatus;
+import com.stori.datamodel.OrderStatusEnum;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "BizOrder")
+@Table(name = "biz_order")
 public class BizOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,11 +31,11 @@ public class BizOrder {
 
 
     @Column(name = "order_status", nullable = false)
-    private OrderStatus orderStatus;
+    private OrderStatusEnum orderStatus;
 
     public BizOrder() {
         this.timestamp = new Date();
-        this.orderStatus = OrderStatus.ACTIVE;
+        this.orderStatus = OrderStatusEnum.ACTIVE;
     }
 
 
@@ -55,11 +55,11 @@ public class BizOrder {
         return id;
     }
 
-    public void setOrderStatus(OrderStatus orderStatus) {
+    public void setOrderStatus(OrderStatusEnum orderStatus) {
         this.orderStatus = orderStatus;
     }
 
-    public OrderStatus getOrderStatus() {
+    public OrderStatusEnum getOrderStatus() {
         return orderStatus;
     }
 

@@ -1,5 +1,5 @@
 package com.stori.datamodel;
 
-public enum OrderStatus {
+public enum OrderStatusEnum {
     ACTIVE, CANCEL
 }

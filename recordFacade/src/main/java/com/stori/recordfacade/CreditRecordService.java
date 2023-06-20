@@ -3,7 +3,7 @@ package com.stori.recordfacade;
 import com.stori.datamodel.model.CreditReleasedRecord;
 import com.stori.datamodel.model.CreditUsedRecord;
 
-public interface CreditRecordServiceBase {
+public interface CreditRecordService {
 
     /**
      */
