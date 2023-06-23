@@ -1,6 +1,7 @@
 package com.stori.datamodel.model;
 
 import com.stori.datamodel.CreditCardStatusEnum;
+import com.stori.datamodel.Money;
 import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.*;
@@ -30,10 +31,14 @@ public class CreditCard {
     private Date endDate;
 
     @Column(nullable = false)
-    private int creditLimit;
+    @Embedded
+    @AttributeOverride(name = "number", column=@Column(name="credit_limit_number"))
+    private Money creditLimit;
 
     @Column(nullable = false)
-    private int creditUsed;
+    @Embedded
+    @AttributeOverride(name = "number", column=@Column(name="credit_used_number"))
+    private Money creditUsed;
 
     @Column(name = "credit_card_status", nullable = false)
     private CreditCardStatusEnum creditCardStatus;
@@ -44,21 +49,21 @@ public class CreditCard {
         cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + CREDIT_CARD_VALID_PERIOD);
         this.endDate = cal.getTime();
         this.creditCardStatus = CreditCardStatusEnum.INIT;
-        this.creditLimit = 0;
-        this.creditUsed = 0;
+        this.creditLimit = new Money(0L);
+        this.creditUsed = new Money(0L);
     }
 
 //    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public void setCreditLimit(int creditLimit) {
+    public void setCreditLimit(Money creditLimit) {
         this.creditLimit = creditLimit;
     }
 
     public void increaseCreditLimit(int creditLimitIncrease) {
-        this.creditLimit += creditLimitIncrease;
+        this.creditLimit.setNumber(this.creditLimit.getNumber() + creditLimitIncrease);
     }
 
     public void decreaseCreditLimit(int creditLimitDecrease) {
-        this.creditLimit -= creditLimitDecrease;
+        this.creditLimit.setNumber(this.creditLimit.getNumber() -  creditLimitDecrease);
     }
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
@@ -67,7 +72,7 @@ public class CreditCard {
     }
 
 //    @Lock(LockModeType.PESSIMISTIC_READ)
-    public int getCreditLimit() {
+    public Money getCreditLimit() {
         return this.creditLimit;
     }
 
@@ -76,12 +81,12 @@ public class CreditCard {
     }
 
 //    @Lock(LockModeType.PESSIMISTIC_READ)
-    public int getCreditUsed() {
+    public Money getCreditUsed() {
         return this.creditUsed;
     }
 
 //    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public void setCreditUsed(int creditUsed) {
+    public void setCreditUsed(Money creditUsed) {
         this.creditUsed = creditUsed;
     }
 

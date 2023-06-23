@@ -5,6 +5,7 @@ import com.stori.bankuserservicefacade.CreditCardService;
 import com.stori.bankuserservicefacade.UserService;
 import com.stori.creditfacade.CreditService;
 import com.stori.datamodel.CreditCardStatusEnum;
+import com.stori.datamodel.Money;
 import com.stori.datamodel.OrderStatusEnum;
 import com.stori.datamodel.model.BizOrder;
 import com.stori.merchantservicefacade.MerchantService;
@@ -46,7 +47,7 @@ public class BizOrderServiceTest {
 
     private static Long creditCardId;
 
-    private final static int initialCreditLimit = 4000;
+    private final static Money initialCreditLimit = new Money(4000L);
 
     private final static int creditUsed = 1000;
 
@@ -64,7 +65,7 @@ public class BizOrderServiceTest {
 
     private static Long orderId;
 
-    private static final int orderAmount = 1000;
+    private static final Money orderAmount = new Money(1000L);
 
     private static long concurrentOrderId;
 

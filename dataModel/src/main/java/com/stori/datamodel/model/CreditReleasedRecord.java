@@ -1,5 +1,7 @@
 package com.stori.datamodel.model;
 
+import com.stori.datamodel.Money;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,13 +16,13 @@ public class CreditReleasedRecord extends Record{
     private CreditCard creditCard;
 
     @Column(name = "credit_released", nullable = false, updatable = false)
-    private int creditReleased;
+    private Money creditReleased;
 
     public CreditReleasedRecord() {
         super();
     }
 
-    public CreditReleasedRecord(CreditCard creditCard, int creditReleased, long requestId) {
+    public CreditReleasedRecord(CreditCard creditCard, Money creditReleased, long requestId) {
         super(content, new Date(), requestId);
         this.creditCard = creditCard;
         this.creditReleased = creditReleased;

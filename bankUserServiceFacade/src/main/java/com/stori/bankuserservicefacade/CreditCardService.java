@@ -1,6 +1,7 @@
 package com.stori.bankuserservicefacade;
 
 import com.stori.datamodel.CreditCardStatusEnum;
+import com.stori.datamodel.Money;
 import com.stori.datamodel.model.CreditCard;
 
 public interface CreditCardService {
@@ -18,7 +19,7 @@ public interface CreditCardService {
      * @param creditCardId the id of the credit card owned by the user
      * @return the status of the credit card owned by this user
      */
-    public abstract CreditCardStatusEnum getStatus(Long creditCardId);
+    CreditCardStatusEnum getStatus(Long creditCardId);
 
 
     /**
@@ -28,14 +29,14 @@ public interface CreditCardService {
      * @param creditLimit  the new credit limit for the credit card
      * @return whether the set operation is successful or not
      */
-    public abstract Boolean setCreditLimit(Long creditCardId, Integer creditLimit);
+    Boolean setCreditLimit(Long creditCardId, Money creditLimit);
 
     /**
      * send request to credit module to get the current credit limit
      *
      * @param creditCardId the id of the credit card owned by the user
-     * @return the current credit limit of the credit card owned by the user
+     * @return the current credit limit of the credit card owned by the user or null if invalid credit card id is provided
      */
-    public abstract Integer getCreditLimit(Long creditCardId);
+    Money getCreditLimit(Long creditCardId);
 
 }

@@ -1,6 +1,7 @@
 package com.stori.orderservicefacade;
 
 
+import com.stori.datamodel.Money;
 import com.stori.datamodel.model.BizOrder;
 
 public interface OrderService {
@@ -12,7 +13,7 @@ public interface OrderService {
      * @param amount       amount of the order
      * @return order id if the operation is successful otherwise null
      */
-    Long createOrder(Long creditCardId, Long merchantId, Integer amount, Long requestId);
+    Long createOrder(Long creditCardId, Long merchantId, Money amount, Long requestId);
 
 
     /**

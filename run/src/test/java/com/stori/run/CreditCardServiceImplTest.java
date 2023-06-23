@@ -5,6 +5,7 @@ import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.stori.bankuserservicefacade.CreditCardService;
 import com.stori.datamodel.CreditCardStatusEnum;
 import com.stori.bankuserservicefacade.UserService;
+import com.stori.datamodel.Money;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -59,10 +60,10 @@ public class CreditCardServiceImplTest {
 
     @Test
     public void testBShouldSetCreditLimit() {
-        int creditLimit = 1000;
+        Money creditLimit = new Money(1000L);
         boolean setCreditLimitRst = creditCardService.setCreditLimit(creditCardId, creditLimit);
         Assert.assertTrue(setCreditLimitRst);
-        int newCreditLimit = creditCardService.getCreditLimit(creditCardId);
+        Money newCreditLimit = creditCardService.getCreditLimit(creditCardId);
         Assert.assertEquals(newCreditLimit, creditLimit);
     }
 
@@ -70,7 +71,7 @@ public class CreditCardServiceImplTest {
     @Test
     public void shouldChangeLimitConcurrently() {
         creditCardService.updateCreditCardStatus(concurrentCreditCardId, CreditCardStatusEnum.ACTIVE);
-        int nextCreditLimit = 2000;
+        Money nextCreditLimit = new Money(2000L);
         CreditCardStatusEnum nextCreditCardStatus = CreditCardStatusEnum.BLOCK;
         Thread a = new Thread() {
             @Override
@@ -92,17 +93,17 @@ public class CreditCardServiceImplTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        int curCreditLimit = creditCardService.getCreditLimit(concurrentCreditCardId);
+        Money curCreditLimit = creditCardService.getCreditLimit(concurrentCreditCardId);
         CreditCardStatusEnum curCreditCardStatus = creditCardService.getStatus(concurrentCreditCardId);
-        Assert.assertTrue(curCreditLimit == nextCreditLimit || curCreditLimit == 0);
+        Assert.assertTrue(curCreditLimit.equals(nextCreditLimit) || curCreditLimit.getNumber() == 0L);
         Assert.assertSame(curCreditCardStatus, CreditCardStatusEnum.BLOCK);
     }
 
     @Test
     public void shouldChangeCardLimitConcurrently() {
         creditCardService.updateCreditCardStatus(concurrentCreditCardId, CreditCardStatusEnum.ACTIVE);
-        int aCreditLimit = 1000;
-        int bCreditLimit = 2000;
+        Money aCreditLimit = new Money(1000L);
+        Money bCreditLimit = new Money(2000L);
         Thread a = new Thread() {
             @Override
             public void run() {

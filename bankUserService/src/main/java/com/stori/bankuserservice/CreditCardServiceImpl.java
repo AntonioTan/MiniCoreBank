@@ -3,6 +3,7 @@ package com.stori.bankuserservice;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservicefacade.CreditCardService;
 import com.stori.datamodel.CreditCardStatusEnum;
+import com.stori.datamodel.Money;
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.repository.CreditCardRepository;
 import org.slf4j.Logger;
@@ -59,8 +60,8 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Transactional(timeout = 30, isolation = Isolation.REPEATABLE_READ)
     @Override
-    public Boolean setCreditLimit(Long creditCardId, Integer creditLimit) {
-        int edited = creditCardRepository.setCreditLimit(creditCardId, creditLimit, CreditCardStatusEnum.ACTIVE);
+    public Boolean setCreditLimit(Long creditCardId, Money creditLimit) {
+        int edited = creditCardRepository.setCreditLimit(creditCardId, creditLimit.getNumber(), CreditCardStatusEnum.ACTIVE);
         if (edited == 1) {
             if(logger.isDebugEnabled()) logger.info("Successfully set credit limit for card with id: {}", creditCardId);
             return true;
@@ -72,10 +73,10 @@ public class CreditCardServiceImpl implements CreditCardService {
 
     @Override
     @Transactional(readOnly = true, timeout = 30)
-    public Integer getCreditLimit(Long creditCardId) {
+    public Money getCreditLimit(Long creditCardId) {
         CreditCard creditCard = getCreditCard(creditCardId);
         if (creditCard == null) {
-            return -1;
+            return null;
         } else {
             return creditCard.getCreditLimit();
         }

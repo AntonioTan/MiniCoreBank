@@ -1,7 +1,7 @@
 package com.stori.datamodel.model;
 
 
-import org.springframework.data.jpa.repository.Lock;
+import com.stori.datamodel.Money;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ public class CreditUsedRecord extends Record implements Serializable {
     public CreditUsedRecord() {
         super(content, new Date());
     }
-    public CreditUsedRecord(CreditCard creditCard, int creditUsed, long requestId) {
+    public CreditUsedRecord(CreditCard creditCard, Money creditUsed, long requestId) {
         super(content, new Date());
         this.creditCard = creditCard;
         this.creditUsed = creditUsed;
@@ -25,7 +25,7 @@ public class CreditUsedRecord extends Record implements Serializable {
     private CreditCard creditCard;
 
     @Column(name = "credit_used", nullable = false, updatable = false)
-    private int creditUsed;
+    private Money creditUsed;
 
 
 }

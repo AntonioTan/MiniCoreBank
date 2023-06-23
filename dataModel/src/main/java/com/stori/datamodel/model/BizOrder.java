@@ -1,6 +1,7 @@
 package com.stori.datamodel.model;
 
 
+import com.stori.datamodel.Money;
 import com.stori.datamodel.OrderStatusEnum;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class BizOrder {
     private Merchant merchant;
 
     @Column(updatable = false, nullable = false)
-    private int amount;
+    private Money amount;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(updatable = false, nullable = false)
@@ -39,7 +40,7 @@ public class BizOrder {
     }
 
 
-    public void setAmount(int amount) {
+    public void setAmount(Money amount) {
         this.amount = amount;
     }
 
@@ -71,7 +72,7 @@ public class BizOrder {
         return creditCard;
     }
 
-    public int getAmount() {
+    public Money getAmount() {
         return amount;
     }
 }

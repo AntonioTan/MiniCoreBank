@@ -30,6 +30,7 @@
     <module>merchantService</module>
     <module>orderServiceFacade</module>
     <module>orderService</module>
+    <module>util</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>

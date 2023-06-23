@@ -4,6 +4,7 @@ import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.alipay.sofa.runtime.api.annotation.SofaService;
 import com.stori.bankuserservicefacade.CreditCardService;
 import com.stori.creditfacade.CreditService;
+import com.stori.datamodel.Money;
 import com.stori.datamodel.OrderStatusEnum;
 import com.stori.datamodel.model.*;
 import com.stori.datamodel.repository.OrderRepository;
@@ -43,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(timeout = 30, isolation = Isolation.REPEATABLE_READ)
     @Override
-    public Long createOrder(Long creditCardId, Long merchantId, Integer amount, Long requestId) {
+    public Long createOrder(Long creditCardId, Long merchantId, Money amount, Long requestId) {
         int foundRequest = createOrderRecordRecordService.findByRequestId(requestId);
         if(foundRequest!=0) {
             logger.warn("Failed to create order due to duplicate request");

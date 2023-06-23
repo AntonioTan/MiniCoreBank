@@ -4,6 +4,7 @@ import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.stori.bankuserservicefacade.CreditCardService;
 import com.stori.datamodel.CreditCardStatusEnum;
 import com.stori.bankuserservicefacade.UserService;
+import com.stori.datamodel.Money;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +42,7 @@ public class UserServiceImplTest {
         Assert.assertTrue(creditCardId >= 0);
         CreditCardStatusEnum creditCardStatus = creditCardService.getStatus(creditCardId);
         Assert.assertEquals(creditCardStatus, CreditCardStatusEnum.INIT);
-        int availableCredit = creditCardService.getCreditLimit(creditCardId);
+        Money availableCredit = creditCardService.getCreditLimit(creditCardId);
         Assert.assertEquals(availableCredit, 0);
     }
 

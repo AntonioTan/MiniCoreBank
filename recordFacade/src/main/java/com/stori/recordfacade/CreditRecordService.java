@@ -7,9 +7,9 @@ public interface CreditRecordService {
 
     /**
      */
-    public abstract void addCreditUsedRecord(CreditUsedRecord creditUsedRecord);
+    void addCreditUsedRecord(CreditUsedRecord creditUsedRecord);
 
     /**
      */
-    public abstract void addCreditReleaseRecord(CreditReleasedRecord creditReleasedRecord);
+    void addCreditReleaseRecord(CreditReleasedRecord creditReleasedRecord);
 }
