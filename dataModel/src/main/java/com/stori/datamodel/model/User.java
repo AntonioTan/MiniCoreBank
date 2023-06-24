@@ -3,13 +3,13 @@ package com.stori.datamodel.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name="USER")
-public class User {
+@Table(name="user")
+public class User extends BasicObj{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    @GenericGenerator(name = "native", strategy = "native")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
     private Long id;
 
@@ -19,15 +19,18 @@ public class User {
     @Column(nullable = false)
     private int balance;
 
-    public User(){};
+    public User(){
+        super();
+    };
 
     public User(String name) {
+        super();
         this.name = name;
         this.balance = 0;
     }
 
     @OneToOne(cascade= CascadeType.ALL)
-    @JoinColumn(name = "credit_card_id", referencedColumnName = "id", nullable = false, updatable = false)
+    @JoinColumn(name = "credit_card_id", referencedColumnName = "id")
     private CreditCard creditCard;
 
 
@@ -44,7 +47,12 @@ public class User {
     }
 
     public void setCreditCard(CreditCard creditCard) {
+        this.updateTime = new Date();
         this.creditCard = creditCard;
+    }
+
+    public CreditCard getCreditCard() {
+        return this.creditCard;
     }
 
 

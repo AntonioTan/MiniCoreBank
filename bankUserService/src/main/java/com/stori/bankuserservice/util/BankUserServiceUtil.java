@@ -2,8 +2,8 @@ package com.stori.bankuserservice.util;
 
 import com.stori.datamodel.model.CreditCard;
 import com.stori.datamodel.repository.CreditCardRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Component
 public class BankUserServiceUtil {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LoggerFactory.getLogger(BankUserServiceUtil.class);
 
     @Resource
     private CreditCardRepository creditCardRepository;

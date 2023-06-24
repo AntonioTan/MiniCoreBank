@@ -21,6 +21,16 @@
     <module>dataModel</module>
     <module>bankUserService</module>
     <module>run</module>
+    <module>creditService</module>
+    <module>recordFacade</module>
+    <module>recordService</module>
+    <module>orderServiceFacade</module>
+    <module>orderService</module>
+    <module>merchantServiceFacade</module>
+    <module>merchantService</module>
+    <module>orderServiceFacade</module>
+    <module>orderService</module>
+    <module>util</module>
   </modules>
   <dependencyManagement>
     <dependencies></dependencies>
