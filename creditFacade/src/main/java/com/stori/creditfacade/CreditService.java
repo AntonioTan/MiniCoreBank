@@ -2,12 +2,15 @@ package com.stori.creditfacade;
 
 import com.stori.datamodel.Money;
 
+/**
+ * The interface defines behavior to provide credit-related service
+ */
 public interface CreditService {
     /**
      * add new credit used record for the credit card
      *
      * @param creditCardId the credit card id
-     * @param creditUsed the credit utilization
+     * @param creditUsed   the credit utilization
      * @return whether the operation is successful or not
      */
     Boolean updateCreditUsed(Long creditCardId, Money creditUsed, Long requestId);
@@ -16,7 +19,7 @@ public interface CreditService {
     /**
      * release credit for the credit card
      *
-     * @param creditCardId the credit card id
+     * @param creditCardId   the credit card id
      * @param creditReleased the credit utilization released in this operation
      * @return whether the operation is successful or not
      */

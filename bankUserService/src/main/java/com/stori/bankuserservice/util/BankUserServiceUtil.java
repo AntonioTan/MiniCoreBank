@@ -20,7 +20,7 @@ public class BankUserServiceUtil {
     @Transactional(timeout = 30)
     public CreditCard getCreditCardById(long creditCardId) {
         Optional<CreditCard> optionCreditCard = creditCardRepository.findById(creditCardId);
-        if(!optionCreditCard.isPresent()) {
+        if (!optionCreditCard.isPresent()) {
             logger.error("Credit card ID " + creditCardId + " could not be found!");
             return null;
         } else {

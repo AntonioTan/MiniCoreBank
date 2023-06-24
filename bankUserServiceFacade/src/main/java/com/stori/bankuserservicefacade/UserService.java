@@ -1,5 +1,8 @@
 package com.stori.bankuserservicefacade;
 
+/**
+ * The interface defines behavior to provide user-related service
+ */
 public interface UserService {
 
 
@@ -9,7 +12,7 @@ public interface UserService {
      * @param name the username
      * @return -1 if operation failed or user id if otherwise
      */
-    public abstract Long saveUser(String name);
+    Long saveUser(String name);
 
 
     /**

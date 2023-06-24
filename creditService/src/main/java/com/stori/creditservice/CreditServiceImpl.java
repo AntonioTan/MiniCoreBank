@@ -39,13 +39,13 @@ public class CreditServiceImpl implements CreditService {
 
     private CreditCard getCreditCard(long creditCardId) {
         Optional<CreditCard> optionalCreditCard = creditCardRepository.findById(creditCardId);
-        return AssertUtil.getOptional(optionalCreditCard);
-//        if (optionalCreditCard.isPresent()) {
-//            return optionalCreditCard.get();
-//        } else {
-//            logger.error("Failed to find credit card by id: " + creditCardId);
-//            return null;
-//        }
+//        return AssertUtil.getOptional(optionalCreditCard);
+        if (optionalCreditCard.isPresent()) {
+            return optionalCreditCard.get();
+        } else {
+            logger.error("Failed to find credit card by id: " + creditCardId);
+            return null;
+        }
     }
 
 
@@ -93,7 +93,6 @@ public class CreditServiceImpl implements CreditService {
             logger.warn("Credit card with id: {} failed to add {} released credit due to inactive status!", creditCardId ,creditReleased.getNumber());
             return false;
         }
-//        int edited = creditCardRepository.addCreditUsed(creditCardId, -creditReleased, CreditCardStatus.ACTIVE);
         Money curCreditUsed = creditCard.getCreditUsed();
         creditCard.setCreditUsed(new Money(curCreditUsed.getNumber() - creditReleased.getNumber()));
         if(logger.isDebugEnabled()) logger.info("Added {} to credit card with id {}",creditReleased ,creditCardId);

@@ -4,6 +4,9 @@ package com.stori.orderservicefacade;
 import com.stori.datamodel.Money;
 import com.stori.datamodel.model.BizOrder;
 
+/**
+ * The interface defines behavior to provide order-related service
+ */
 public interface OrderService {
     /**
      * create a new order
@@ -28,6 +31,6 @@ public interface OrderService {
      * @param orderId order id
      * @return the found order
      */
-     BizOrder getOrder(Long orderId);
+    BizOrder getOrder(Long orderId);
 }
 
