@@ -11,10 +11,10 @@ import java.util.Date;
 public class CreditUsedRecord extends Record implements Serializable {
     private static final String content = "Credit Used Record";
     public CreditUsedRecord() {
-        super(content, new Date());
+        super(content);
     }
     public CreditUsedRecord(CreditCard creditCard, Money creditUsed, long requestId) {
-        super(content, new Date());
+        super(content);
         this.creditCard = creditCard;
         this.creditUsed = creditUsed;
         this.requestId = requestId;

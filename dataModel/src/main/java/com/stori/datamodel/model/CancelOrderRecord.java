@@ -1,9 +1,6 @@
 package com.stori.datamodel.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -14,11 +11,11 @@ public class CancelOrderRecord extends Record {
     private Long orderId;
 
     public CancelOrderRecord() {
-
+        super();
     }
 
     public CancelOrderRecord(Long requestId) {
-        super(content, new Date(), requestId);
+        super(content, requestId);
     }
 
     public void setOrderId(Long orderId) {

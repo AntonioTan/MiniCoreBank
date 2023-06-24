@@ -24,11 +24,15 @@ public class CreditCard {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "start_date", nullable = false)
-    private Date startDate;
+    private Date createTime;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "end_date", nullable = false)
     private Date endDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_time", nullable = false)
+    private Date updateTime;
 
     @Column(nullable = false)
     @Embedded
@@ -44,34 +48,38 @@ public class CreditCard {
     private CreditCardStatusEnum creditCardStatus;
 
     public CreditCard() {
-        this.startDate = new Date();
-        cal.setTime(this.startDate);
+        this.createTime = new Date();
+        cal.setTime(this.createTime);
         cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) + CREDIT_CARD_VALID_PERIOD);
         this.endDate = cal.getTime();
         this.creditCardStatus = CreditCardStatusEnum.INIT;
         this.creditLimit = new Money(0L);
         this.creditUsed = new Money(0L);
+        this.updateTime = new Date();
     }
 
 //    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void setCreditLimit(Money creditLimit) {
+        this.updateTime = new Date();
         this.creditLimit = creditLimit;
     }
 
     public void increaseCreditLimit(int creditLimitIncrease) {
+        this.updateTime = new Date();
         this.creditLimit.setNumber(this.creditLimit.getNumber() + creditLimitIncrease);
     }
 
     public void decreaseCreditLimit(int creditLimitDecrease) {
+        this.updateTime = new Date();
         this.creditLimit.setNumber(this.creditLimit.getNumber() -  creditLimitDecrease);
     }
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void setCreditCardStatus(CreditCardStatusEnum creditCardStatus) {
+        this.updateTime = new Date();
         this.creditCardStatus = creditCardStatus;
     }
 
-//    @Lock(LockModeType.PESSIMISTIC_READ)
     public Money getCreditLimit() {
         return this.creditLimit;
     }
@@ -80,21 +88,20 @@ public class CreditCard {
         return this.id;
     }
 
-//    @Lock(LockModeType.PESSIMISTIC_READ)
     public Money getCreditUsed() {
         return this.creditUsed;
     }
 
 //    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void setCreditUsed(Money creditUsed) {
+        this.updateTime = new Date();
         this.creditUsed = creditUsed;
     }
 
     public void setUser(User user) {
+        this.updateTime = new Date();
         this.user = user;
     }
-
-//    @Lock(LockModeType.PESSIMISTIC_READ)
 
     public CreditCardStatusEnum getCreditCardStatus() {
         return this.creditCardStatus;

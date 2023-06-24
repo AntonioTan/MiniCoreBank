@@ -3,10 +3,11 @@ package com.stori.datamodel.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User extends BasicObj{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, updatable = false)
@@ -18,9 +19,12 @@ public class User {
     @Column(nullable = false)
     private int balance;
 
-    public User(){};
+    public User(){
+        super();
+    };
 
     public User(String name) {
+        super();
         this.name = name;
         this.balance = 0;
     }
@@ -43,6 +47,7 @@ public class User {
     }
 
     public void setCreditCard(CreditCard creditCard) {
+        this.updateTime = new Date();
         this.creditCard = creditCard;
     }
 

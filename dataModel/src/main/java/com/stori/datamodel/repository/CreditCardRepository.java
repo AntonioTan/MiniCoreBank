@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
     //    @Lock(value= LockModeType.PESSIMISTIC_WRITE)
-    @Query(value = "select * from credit_card c where c.id=:creditCardId for update", nativeQuery = true)
+    @Query(value = "select id, user_id, start_date, end_date, update_time, credit_limit_number, credit_used_number, credit_card_status from credit_card c where c.id=:creditCardId for update", nativeQuery = true)
     CreditCard selectCreditCardForUpdate(@Param("creditCardId") Long id);
 
     @Modifying(clearAutomatically = true)

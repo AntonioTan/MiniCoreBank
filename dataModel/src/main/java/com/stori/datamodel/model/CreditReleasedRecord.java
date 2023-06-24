@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import java.util.Date;
 
 @Entity
 public class CreditReleasedRecord extends Record{
@@ -23,13 +22,9 @@ public class CreditReleasedRecord extends Record{
     }
 
     public CreditReleasedRecord(CreditCard creditCard, Money creditReleased, long requestId) {
-        super(content, new Date(), requestId);
+        super(content, requestId);
         this.creditCard = creditCard;
         this.creditReleased = creditReleased;
     }
 
-
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
-    }
 }

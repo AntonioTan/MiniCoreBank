@@ -6,23 +6,22 @@ import javax.persistence.OneToOne;
 import java.util.Date;
 
 @Entity
-public class CreateOrderRecord extends Record{
+public class CreateOrderRecord extends Record {
 
     private static final String content = "Order Creation Record";
 
     @OneToOne
-    @JoinColumn(name="order_id", referencedColumnName = "id", updatable = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", updatable = false)
     private BizOrder bizOrder;
-    public CreateOrderRecord(Long requestId) {
-        super(content, new Date(), requestId);
-    }
 
     public CreateOrderRecord() {
-
+        super();
     }
 
-
-    public void setOrder(BizOrder bizOrder) {
+    public CreateOrderRecord(BizOrder bizOrder, Long requestId) {
+        super(content, requestId);
         this.bizOrder = bizOrder;
     }
+
+
 }

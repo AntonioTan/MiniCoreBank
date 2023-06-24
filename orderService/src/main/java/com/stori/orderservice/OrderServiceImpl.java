@@ -65,8 +65,7 @@ public class OrderServiceImpl implements OrderService {
         bizOrder.setMerchant(merchant);
         CreditCard creditCard = creditCardService.getCreditCard(creditCardId);
         bizOrder.setCreditCard(creditCard);
-        CreateOrderRecord createOrderRecord = new CreateOrderRecord(requestId);
-        createOrderRecord.setOrder(bizOrder);
+        CreateOrderRecord createOrderRecord = new CreateOrderRecord(bizOrder, requestId);
         createOrderRecordRecordService.saveRecord(createOrderRecord);
         orderRepository.saveAndFlush(bizOrder);
         return bizOrder.getId();
